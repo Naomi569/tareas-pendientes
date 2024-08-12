@@ -3,32 +3,30 @@
 
 const fecha = document.querySelector('#fecha');
 const lista = document.querySelector('#lista');
-const elemento = document.querySelector('#elemento');
 const input = document.querySelector('#input');
-const botonAgregar = document.querySelector('#botonAgregar');
+const botonAgregar = document.querySelector('#agregar-tarea');
+const elemento = document.querySelector('#elemento');
 const check = 'bi-record-circle';
-const tachado = 'tachado';
 const uncheck = 'bi-circle';
-let LIST;
-let id;
+const tachado = 'tachado';
+let LIST, id;
 
+//Para mostrar la fecha actual es
 const FECHA = new Date ()
 fecha.innerHTML = FECHA.toLocaleDateString('es-MX',{
     weekday:'long',
     month: 'short',
     day: 'numeric'
 });
-// DOM
 
 //Función agregar tarea
 function agregarTarea(tarea,id,hecho,eliminar) {
-    if (eliminar) {
-        return
-    }
+    if (eliminar) { return }
 
     const realizado = hecho ? check : uncheck;
     const LINE = hecho ? tachado : '' ;
-    const elemento = `<li id="elemento">
+    const elemento = 
+                `<li id="elemento">
                     <i id="${id} " data="hecho" class="bi ${realizado} "></i>
                     <p class="tarea-lista ${LINE} ">${tarea} </p>
                     <i id="${id} " data="eliminar" class="bi bi-x"></i>
@@ -36,18 +34,23 @@ function agregarTarea(tarea,id,hecho,eliminar) {
                 lista.insertAdjacentHTML("beforeend", elemento);
             
 }
+
+//Funcion para marcar tarea como realizada
 function tareaRealizada(element) {
     element.classList.toggle(check);
     element.classList.toggle(uncheck);
-    element.parentNode.querySelector('.text').classList.toggle(tachado);
-    LIST[element.id].realizado = LIST[element.id].realizado ?false :true;
+    element.parentNode.querySelector('.tarea-lista').classList.toggle(tachado);
+    LIST[element.id].realizado = !LIST[element.id].realizado ?false :true;
 }
+
+//Funcion para eliminar tarea
 function tareaEliminada(element) {
     element.parentNode.parentNode.removeChild(element.parentNode);
     LIST[element.id].eliminar = true;
     
 };
 
+//Evento de clic para agregar tarea
 botonAgregar.addEventListener("click", () => {
     const tarea = input.value;
     if (tarea) {
@@ -64,6 +67,8 @@ botonAgregar.addEventListener("click", () => {
 
     }
 });
+
+//Para marcar o eliminar tarea
 lista.addEventListener("click", function (event){
     const element = event.target;
     const elementData = element.attributes.data.value;
@@ -75,6 +80,7 @@ lista.addEventListener("click", function (event){
     localStorage.setItem("TODO", JSON.stringify(LIST));
 });
 
+//Cargar tareas desde local Storage
 let data = localStorage.getItem ("TODO");
 if (data) {
     LIST = JSON.parse(data);
