@@ -6,7 +6,7 @@
  * alert('hola desde un alert');
  */
 
-//var apellido = "Naranjo"; era la antigua forma de nombrar una variable
+//var apellido = "Naranja"; era la antigua forma de nombrar una variable
 let nombre = "Naomi";
 
 const pi = 3.14;
